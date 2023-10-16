@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  padding: 0px;
+  margin: 0px;
+  max-width: unset;
+  font-family: "Work Sans";
+}
+
+.interiorItem:hover p {
+  opacity: 1;
+}
+.mobileElement {
+  display: none;
+}
+.interiorItemP {
+  @apply opacity-0 absolute left-2/4 translate-x-[-50%] text-white text-2xl font-bold;
+}
+
+.productContainer:hover .productImage {
+  transform: scale(1.1);
+}
+
+.productContainer:hover .productShadow {
+  transform: scale(1.2);
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .desktopElement {
+    display: none;
+  }
+  .mobileElement {
+    display: flex;
+  }
+}
