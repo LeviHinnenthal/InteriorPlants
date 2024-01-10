@@ -21,6 +21,24 @@ body,
   @apply opacity-0 absolute left-2/4 translate-x-[-50%] text-white text-2xl font-bold;
 }
 
+.react-wavy-transitions__wavy-link{
+  margin: 0px 10px;
+}
+
+.contact-curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+ background-image: url(./assets/logo.png);
+ background-repeat: no-repeat;
+ background-size: 200px;
+ background-position: center center;
+  overflow: hidden;
+}
+
 .productContainer:hover .productImage {
   transform: scale(1.1);
 }

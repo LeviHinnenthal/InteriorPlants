@@ -1,9 +1,12 @@
 import React from "react";
 import BestSellerProducts from "./BestSellerProducts";
 import arrowRight from "../../assets/arrowRight.svg";
+
 const BestSeller = () => {
+ 
+
   return (
-    <div className="flex flex-col md:flex-row mx-auto items-center max-w-[900px] md:my-[150px]">
+    <div className="flex flex-col md:flex-row mx-auto items-center max-w-[900px] md:my-[70px]">
       <div className="left  md:w-[230px] flex flex-col group">
         <p className="font-bold text-4xl text-left">
           Best Seller <br /> Product
@@ -13,7 +16,6 @@ const BestSeller = () => {
           <img src={arrowRight} alt="Rating" className="w-6 my-4" />
         </div>
       </div>
-
       <BestSellerProducts />
     </div>
   );

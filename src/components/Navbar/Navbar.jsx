@@ -9,6 +9,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {
@@ -28,7 +29,7 @@ const Navbar = () => {
   return (
     <>
       <div
-        className={`navbar flex items-center h-[50px] md:h-[70px] sticky w-full top-0 b-1 z-20 py-4 px-6 ${
+        className={`navbar flex items-center h-[50px] transition-all duration-100 md:h-[70px] sticky w-full top-0 b-1 z-20 py-4 px-6 ${
           location.pathname != "/" ? "bg-primary-100" : ""
         } ${scrolled ? "bg-primary-100" : ""} desktopElement`}
       >
@@ -53,6 +54,7 @@ const Navbar = () => {
           </div>
 
           <Cart />
+          
         </div>
       </div>
 
