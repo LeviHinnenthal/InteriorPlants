@@ -1,54 +1,32 @@
 import { React, useState, useEffect } from "react";
-import { collection, getDocs, where, query } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import AOS from "aos";
 import "aos/dist/aos.css";
-import { motion } from "framer-motion";
 import Products from "../components/Products/Products";
 import Filter from "../components/Filters/Filter";
-import { Input } from "@nextui-org/react";
 import SearchButton from "../assets/searchButton.png";
-import SearchBarBanner from "../components/SearchBarBanner/SearchBarBanner";
-import { useLocation, useParams } from "react-router-dom";
-import { getProducts } from "../api/api";
+import { useParams } from "react-router-dom";
+// import { getProducts } from "../api/api";
+import { useProducts } from "../api/useProducts";
+import AOS from "aos";
 
 const Shop = () => {
-  const [products, setProducts] = useState([]);
-  const [allProducts, setAllProducts] = useState([]);
+  const { categories, products, setSearchTerm, setCategoryFilter, loading } =
+    useProducts();
   const { category } = useParams(); // Agrega esta línea para obtener el parámetro de la URL
-  const location = useLocation(); // Necesitas usar useLocation para detectar cambios en la URL
 
-  const handleInputChange = (event) => {
-    const newSearch = event.target.value;
-
-    const filteredItems = allProducts.filter((product) =>
-      product.title.toLowerCase().includes(newSearch.toLowerCase())
-    );
-
-    setProducts(filteredItems);
-
-    console.log(newSearch);
-  };
+  console.log(category);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const productsData = await getProducts();
+    setSearchTerm(""); // Limpiar el término de búsqueda al cambiar de categoría
+    setCategoryFilter(category); // Aplicar filtro de categoría desde la URL
+  }, [category, setSearchTerm, setCategoryFilter]);
 
-        // Filtra por categoría si hay una en la URL
-        const filteredProducts = category
-          ? productsData.filter((product) => product.category === category)
-          : productsData;
-
-        setProducts(filteredProducts);
-        setAllProducts(productsData);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchData();
-  }, [location.pathname]); // Asegúrate de incluir location.pathname en las dependencias
+  const filteredProductsByCategory = category
+    ? products.filter(
+        (product) =>
+          product.attributes.category.data.attributes.Name.toLowerCase() ===
+          category
+      )
+    : products;
 
   return (
     <>
@@ -61,7 +39,7 @@ const Shop = () => {
             type="text"
             placeholder="Search plant..."
             className="focus:outline-none w-[90%] md:w-[50%] bg-transparent text-black placeholder-black pl-4"
-            onChange={handleInputChange}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <img
             src={SearchButton}
@@ -71,15 +49,12 @@ const Shop = () => {
         </div>
         <div className="flex flex-col md:flex-row mx-auto w-[90%] md:w-[95%]">
           <div className="md:mt-16 w-full md:w-[20%] box-border p-6 md:ml-[2.5%] shadow-xl rounded-[30px] h-fit bg-primary-100 text-white md:min-h-[200px]">
-            <Filter />
+            <Filter categories={categories} />
           </div>
-          <div
-            // data-aos="fade-up"
-            className="grid grid-cols-1 md:grid-cols-4 gap-6 min-w-[75%]  md:w-[95%] md:ml-[2.5%] mb-20"
-          >
-            {products.length >= 1 ? (
-              products.map((product, i) => (
-                <Products key={i} product={product} />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 min-w-[75%]  md:w-[95%] md:ml-[2.5%] mb-20">
+            {filteredProductsByCategory.length >= 1 ? (
+              filteredProductsByCategory.map((product, i) => (
+                <Products key={i} product={product}  />
               ))
             ) : (
               <div className="noProducts col-span-3 mt-16">

@@ -1,12 +1,31 @@
-import React from "react";
+import { useEffect } from "react";
 import CartImg from "../../assets/cart.png";
 import cartNumber from "../../assets/cartNumber.png";
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useCartStore } from "../../Cart/CartStore";
+import CartPurchase from "../CartPurchase/CartPurchase";
+import { currentCart } from "../../Cart/CartStore";
 
 const Cart = () => {
   const [cartOpen, setCartOpen] = useState(false);
-  const [isEmpty, setIsEmpty] = useState(true);
+  const [cartCount, setCartCount] = useState(0);
+  // const clearCart = useCartStore((state) => state.clearCart());
+
+  // const handleClearCart = () => {
+  //   clearCart();
+  // };
+
+  useEffect(() => {
+    // Suscribirse a cambios en el carrito
+    const unsubscribe = useCartStore.subscribe((state) => {
+      setCartCount(
+        state.cart.reduce((total, item) => total + item.quantity, 0)
+      );
+    });
+
+    // Limpiar la suscripción al desmontar el componente
+    return () => unsubscribe();
+  }, []);
 
   return (
     <>
@@ -14,7 +33,7 @@ const Cart = () => {
         <img className="w-[24px]" src={CartImg} alt="Cart Image" />
         <div className="number -ml-1 -mt-4 flex justify-center items-center">
           <img className="w-[17px] absolute z-0" src={cartNumber} alt="Cart" />
-          <p className="z-10 text-sm">0</p>
+          <p className="z-10 text-sm">{cartCount}</p>
         </div>
       </div>
 
@@ -24,13 +43,21 @@ const Cart = () => {
         }`}
       >
         <div className="cartContent flex flex-col justify-between">
-          <p>This is your cart</p>
+          <div>
+            <CartPurchase />
+          </div>
           <div
             className={`button bg-white mt-6 rounded-lg w-[60%] mx-auto text-black py-2 ${
-              isEmpty ? "cursor-unset" : "cursor-pointer"
+              cartCount == 0 ? "cursor-unset" : "cursor-pointer"
             }`}
           >
-            {isEmpty ? "Your cart is empty" : "Purchase"}
+            {cartCount == 0 ? "Your cart is empty" : "Pay"}
+          </div>
+          <div
+            // onClick={() => handleClearCart()}
+            className="mt-2 cursor-pointer border-1 py-2 rounded-lg w-[60%] mx-auto"
+          >
+            Clear cart
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ export const getProducts = async (category = null) => {
     const filteredProducts = category
       ? productsData.filter((product) => product.category === category)
       : productsData;
-    console.log(filteredProducts);
+    
     return filteredProducts;
   } catch (error) {
     console.error("Error fetching products:", error);
