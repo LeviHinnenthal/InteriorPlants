@@ -43,7 +43,7 @@ const Popup = ({ showPopup, setShowPopup, product }) => {
         <div className="md:w-2/4 flex h-[80%] items justify-center">
           <img
             className=" hover:scale-150 transition-all"
-            src={`http://localhost:1337${productImage}`}
+            src={`https://interiorplantsadmin.onrender.com${productImage}`}
             alt=""
           />
         </div>

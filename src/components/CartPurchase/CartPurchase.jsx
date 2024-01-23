@@ -20,7 +20,7 @@ const CartPurchase = () => {
           </div>
           <img
           className="w-20 group-hover:scale-150 transition-all"
-            src={`http://localhost:1337${cartItem.product.attributes.Image.data[0].attributes.url}`}
+            src={`https://interiorplantsadmin.onrender.com${cartItem.product.attributes.Image.data[0].attributes.url}`}
             alt=""
           />
           <p onClick={() => handleRemoveFromCart(cartItem.product)} className="delte cursor-pointer">X</p>

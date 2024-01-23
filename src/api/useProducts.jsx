@@ -34,7 +34,7 @@ export const useProducts = () => {
     try {
       const {
         data: { data },
-      } = await axios.get("http://localhost:1337/api/categories");
+      } = await axios.get("https://interiorplantsadmin.onrender.com/api/categories");
       setCategories(data);
     
     } catch (error) {
@@ -49,7 +49,7 @@ export const useProducts = () => {
     try {
       const {
         data: { data },
-      } = await axios.get("http://localhost:1337/api/products?populate=*");
+      } = await axios.get("https://interiorplantsadmin.onrender.com/api/products?populate=*");
       setProducts(data);
       
     } catch (error) {

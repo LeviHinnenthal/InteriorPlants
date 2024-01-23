@@ -18,7 +18,7 @@ const Products = ({ product }) => {
         <div className="mt-16  bg-neutral-100 flex flex-col justify-between aspect-square rounded-[30px]">
           <div className="imageContain flex flex-col items-center">
             <img
-              src={`http://localhost:1337${productImage}`}
+              src={`https://interiorplantsadmin.onrender.com${productImage}`}
               alt="Product Image"
               className="productImage transition-all w-[85%]  -mt-[60px] z-10"
             />
