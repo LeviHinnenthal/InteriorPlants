@@ -16,7 +16,7 @@ const Contact = () => {
     //   setCurtainHeightContact(0);
     // }, 500);
 
-    // return () => clearTimeout(timeout);
+    // return () => clearTimeout(timeout)
   }, []);
 
   function handleSubmit(e) {
