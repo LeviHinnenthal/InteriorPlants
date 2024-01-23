@@ -9,13 +9,11 @@ const useCartStore = create((set) => ({
       );
 
       if (existingItemIndex !== -1) {
-        // El producto ya existe en el carrito, actualiza la cantidad
         const updatedCart = [...state.cart];
         updatedCart[existingItemIndex].quantity += quantity;
 
         return { cart: updatedCart };
       } else {
-        // El producto no existe en el carrito, añádelo
         return { cart: [...state.cart, { product, quantity }] };
       }
     }),
@@ -27,11 +25,11 @@ const useCartStore = create((set) => ({
   getCurrentCart: () => useCartStore.getState().cart,
 }));
 
-let currentCart = []; // Variable para almacenar el carrito actual
+let currentCart = [];
 
 useCartStore.subscribe((state) => {
   console.log("Updated Cart State:", state.cart);
-  currentCart = state.cart; // Actualizar la variable del carrito actual
+  currentCart = state.cart;
 });
 
 export { useCartStore, currentCart };

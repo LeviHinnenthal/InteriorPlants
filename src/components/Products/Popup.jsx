@@ -33,16 +33,16 @@ const Popup = ({ showPopup, setShowPopup, product }) => {
         showPopup ? "show" : "hidden"
       }  fixed top-0 left-0 w-screen h-screen z-20`}
     >
-      <div className="bg-white/30 overflow-auto md:overflow-visible backdrop-blur-[40px] rounded-3xl p-10 md:p-20 w-[95%] md:w-3/4 h-[90%] md:h-3/4 mx-auto mt-[10%]  flex flex-col md:flex-row">
+      <div className="bg-white/30 overflow-auto items-center max-w-[1100px] md:overflow-visible backdrop-blur-[40px] rounded-3xl p-10 md:p-20 w-[95%] md:w-3/4 h-[90%] md:h-3/4 mx-auto mt-[10%]  flex flex-col md:flex-row">
         <div
           onClick={() => setShowPopup(false)}
           className="absolute cursor-pointer right-6 top-6 md:right-10 md:top-10"
         >
           X
         </div>
-        <div className="md:w-2/4">
+        <div className="md:w-2/4 flex h-[80%] items justify-center">
           <img
-            className="w-full hover:scale-150 transition-all"
+            className=" hover:scale-150 transition-all"
             src={`http://localhost:1337${productImage}`}
             alt=""
           />
