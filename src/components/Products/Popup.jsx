@@ -47,8 +47,8 @@ const Popup = ({ showPopup, setShowPopup, product }) => {
             alt=""
           />
         </div>
-        <div className="md:w-2/4 flex flex-col text-black mt-10 md:mt-0 md:text-2xl h-full justify-between items-start">
-          <p className="mb-2 md:mb-0 text-2xl">{productAttributes.Name}</p>
+        <div className="md:w-2/4 flex flex-col text-black mt-10 md:mt-0 md:text-lg h-full justify-between items-start">
+          <p className="mb-2 md:mb-0 text-lg">{productAttributes.Name}</p>
 
           <p className="mb-4 md:mb-0">{productCategory}</p>
           <p className="text-left mb-6 md:mb-0">
