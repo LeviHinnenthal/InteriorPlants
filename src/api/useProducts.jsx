@@ -1,67 +1,63 @@
-import { React, useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 export const useProducts = () => {
-  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
 
   const applyFilters = () => {
+    // Lógica de filtrado según los filtros actuales (searchTerm y categoryFilter)
     let filteredProducts = [...products];
 
-    // Aplicar filtro por término de búsqueda
     if (searchTerm) {
       filteredProducts = filteredProducts.filter((product) =>
-        product.attributes.Name.toLowerCase().includes(searchTerm.toLowerCase())
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Aplicar filtro por categoría
     if (categoryFilter) {
       filteredProducts = filteredProducts.filter(
-        (product) => product.attributes.category.data.attributes.Name.toLowerCase() === categoryFilter.toLowerCase()
+        (product) => product.title.toLowerCase() === categoryFilter.toLowerCase()
       );
     }
 
-   
     return filteredProducts;
   };
 
-  const fetchCategories = async () => {
-    setLoading(true);
-    try {
-      const {
-        data: { data },
-      } = await axios.get("https://interiorplantsadmin.onrender.com/api/categories");
-      setCategories(data);
-    
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchProducts = async () => {
-    setLoading(true);
-    try {
-      const {
-        data: { data },
-      } = await axios.get("https://interiorplantsadmin.onrender.com/api/products?populate=*");
-      setProducts(data);
-      
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchCategories();
-    fetchProducts();
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        // Obtener categorías
+        const categoriesCollection = collection(db, "categories");
+        const categoriesSnapshot = await getDocs(categoriesCollection);
+        const categoriesData = categoriesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setCategories(categoriesData);
+
+        // Obtener productos
+        const productsCollection = collection(db, "products");
+        const productsSnapshot = await getDocs(productsCollection);
+        const productsData = productsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return {

@@ -10,10 +10,10 @@ const Filter = ({ categories }) => {
           <Link to="/shop">All</Link>
           {categories.map((category) => (
             <Link
-              key={category.attributes.id}
-              to={`/shop/${category.attributes.Name.toLowerCase()}`}
+              key={category.name}
+              to={`/shop/${category.name.toLowerCase()}`}
             >
-              {category.attributes.Name}
+              {category.name}
             </Link>
           ))}
         </div>

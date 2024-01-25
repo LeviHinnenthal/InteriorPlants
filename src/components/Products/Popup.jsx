@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {useCartStore} from "../../Cart/CartStore";
+import { getDoc } from "firebase/firestore";
 
-const Popup = ({ showPopup, setShowPopup, product }) => {
-  const productImage = product.attributes.Image.data[0].attributes.url;
-  const productAttributes = product.attributes;
-  const productCategory = product.attributes.category.data.attributes.Name;
+const Popup = ({ showPopup, setShowPopup, product, category }) => {
+
   const [quantity, setQuantity] = useState(1);
   const addToCart = useCartStore((state) => state.addToCart);
-  const removeFromCart = useCartStore((state) => state.removeFromCart);
-  const clearCart = useCartStore((state) => state.clearCart);
+  const [categoryName, setCategoryName] = useState("");
 
   const increment = () => {
     setQuantity(quantity + 1);
@@ -25,6 +23,26 @@ const Popup = ({ showPopup, setShowPopup, product }) => {
     // Aquí podrías cerrar el popup o realizar otras acciones después de agregar al carrito
     setShowPopup(false);
   };
+
+  useEffect(() => {
+    const fetchCategoryName = async () => {
+      try {
+        const categoryRef = product.category;
+        const categoryDoc = await getDoc(categoryRef);
+
+        if (categoryDoc.exists()) {
+          const categoryName = categoryDoc.data().name;
+          setCategoryName(categoryName);
+        } else {
+          console.error("No se encontró el documento de la categoría");
+        }
+      } catch (error) {
+        console.error("Error al obtener el nombre de la categoría:", error);
+      }
+    };
+
+    fetchCategoryName();
+  }, [product.category]);
 
   
   return (
@@ -43,20 +61,20 @@ const Popup = ({ showPopup, setShowPopup, product }) => {
         <div className="md:w-2/4 flex h-[80%] items justify-center">
           <img
             className=" hover:scale-150 transition-all"
-            src={`https://interiorplantsadmin.onrender.com${productImage}`}
+            src={product.img}
             alt=""
           />
         </div>
         <div className="md:w-2/4 flex flex-col text-black mt-10 md:mt-0 md:text-lg h-full justify-between items-start">
-          <p className="mb-2 md:mb-0 text-lg">{productAttributes.Name}</p>
+          <div className="mb-2 md:mb-0 text-lg">{product.title}</div>
 
-          <p className="mb-4 md:mb-0">{productCategory}</p>
-          <p className="text-left mb-6 md:mb-0">
+          <div className="mb-4 md:mb-0">{categoryName}</div>
+          <div className="text-left mb-8 md:mb-0">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
             aliquip ex ea commodo consequat.
-          </p>
+          </div>
           <div className="w-full flex flex-wrap">
             <div className="quantityButton flex justify-center rounded-xl py-[12px] w-full md:w-2/4 border-primary-100 border-1">
               <p className="mr-4">Quantity</p>
@@ -81,7 +99,7 @@ const Popup = ({ showPopup, setShowPopup, product }) => {
             </p>
             <button onClick={() => handleAddToCart()} className="bg-primary-100 cursor-pointer my-4 flex justify-center border-1 border-primary-100 text-white py-4 w-full rounded-xl transition-all hover:bg-transparent hover:text-black">
               Add to cart{" "}
-              <p className="ml-4">(${productAttributes.Price * quantity})</p>
+              <p className="ml-4">(${product.price * quantity})</p>
             </button>
           </div>
         </div>

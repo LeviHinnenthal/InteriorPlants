@@ -13,7 +13,6 @@ export const getProducts = async (category = null) => {
         id: doc.id,
         title: data.title,
         img: data.img,
-        stars: data.stars,
         price: data.price,
         category: data.category,
       });
@@ -23,7 +22,7 @@ export const getProducts = async (category = null) => {
     const filteredProducts = category
       ? productsData.filter((product) => product.category === category)
       : productsData;
-    
+
     return filteredProducts;
   } catch (error) {
     console.error("Error fetching products:", error);

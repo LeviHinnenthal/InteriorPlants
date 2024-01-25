@@ -5,9 +5,6 @@ import Popup from "./Popup";
 
 
 const Products = ({ product }) => {
-  const productImage = product.attributes.Image.data[0].attributes.url;
-  const productAttributes = product.attributes;
-  const productCategory = product.attributes.category.data.attributes.Name;
   const [showPopup, setShowPopup] = useState(false);
   return (
     <>
@@ -18,7 +15,7 @@ const Products = ({ product }) => {
         <div className="mt-16  bg-neutral-100 flex flex-col justify-between aspect-square rounded-[30px]">
           <div className="imageContain flex flex-col items-center">
             <img
-              src={`https://interiorplantsadmin.onrender.com${productImage}`}
+              src={product.img}
               alt="Product Image"
               className="productImage transition-all w-[85%]  -mt-[60px] z-10"
             />
@@ -32,10 +29,10 @@ const Products = ({ product }) => {
 
         <div className="bg-white shadow-md rounded-[30px] flex flex-col justify-between w-full bottom-0 p-6 -mt-16 md:-mt-10">
           <div className="up flex flex-col items-start">
-            <p className="text-lg">{productAttributes.Name}</p>
+            <p className="text-lg">{product.title}</p>
           </div>
           <div className="bottom flex justify-between items-center">
-            <p className="font-bold">${productAttributes.Price}</p>
+            <p className="font-bold">${product.price}</p>
             <img
               className="w-8 hover:rotate-180 duration-200"
               src={add}

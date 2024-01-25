@@ -9,8 +9,7 @@ import { useProducts } from "../api/useProducts";
 import AOS from "aos";
 
 const Shop = () => {
-  const { categories, products, setSearchTerm, setCategoryFilter, loading } =
-    useProducts();
+  const { categories, products, setSearchTerm, setCategoryFilter, loading } = useProducts();
   const { category } = useParams(); // Agrega esta línea para obtener el parámetro de la URL
 
   console.log(category);
@@ -21,12 +20,32 @@ const Shop = () => {
   }, [category, setSearchTerm, setCategoryFilter]);
 
   const filteredProductsByCategory = category
-    ? products.filter(
-        (product) =>
-          product.attributes.category.data.attributes.Name.toLowerCase() ===
-          category
-      )
-    : products;
+  ? products.filter((product) => {
+      const categoryRef = product.category;
+
+      // Verifica si la referencia de la categoría es válida
+      if (categoryRef instanceof Object) {
+        console.log("Category Reference is an Object");
+
+        // Intenta imprimir la estructura de datos de la categoría
+        console.log("Category Reference Data:", categoryRef.data());
+
+        // Verifica si el nombre de la categoría existe en la estructura de datos
+        const categoryName = categoryRef.data()?.Name;
+
+        if (categoryName) {
+          // Ajusta la comparación para ignorar mayúsculas y minúsculas
+          return categoryName.toLowerCase() === category.toLowerCase();
+        } else {
+          console.error("Category Name not found in Category Reference Data");
+        }
+      } else {
+        console.error("Category Reference is not an Object");
+      }
+
+      return false; // Si la referencia de la categoría no es válida, exclúyelo del filtro
+    })
+  : products;
 
   return (
     <>
